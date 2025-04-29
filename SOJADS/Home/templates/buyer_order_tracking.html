@@ -1,0 +1,197 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Orders</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF6600',
+                        secondary: '#000000',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-8 text-center text-primary">My Orders</h1>
+
+        <div class="bg-secondary shadow-md rounded-lg overflow-hidden mb-8">
+            <div class="border-b border-gray-700">
+                <nav class="-mb-px flex" aria-label="Tabs">
+                    <button class="tab-btn w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm border-primary text-primary" data-tab="active">
+                        Active Orders
+                    </button>
+                    <button class="tab-btn w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-300" data-tab="completed">
+                        Completed Orders
+                    </button>
+                </nav>
+            </div>
+
+            <div id="active-orders" class="tab-content">
+                <table class="min-w-full divide-y divide-gray-700">
+                    <thead class="bg-gray-800">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Order ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Product</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Quantity</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Total</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-gray-900 divide-y divide-gray-700">
+                        {% for order in active_orders %}
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ order.id }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ order.product.name }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ order.quantity }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">KSh {{ order.total_amount }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                        {% if order.status == 'pending' %}bg-yellow-100 text-yellow-800
+                                        {% elif order.status == 'processing' %}bg-blue-100 text-blue-800
+                                        {% elif order.status == 'shipped' %}bg-purple-100 text-purple-800
+                                        {% else %}bg-primary text-white{% endif %}">
+                                        {{ order.get_status_display }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ order.created_at|date:"M d, Y" }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    {% if order.status == 'pending' or order.status == 'processing' %}
+                                        <button class="cancel-order-btn bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" data-order-id="{{ order.id }}">
+                                            Cancel
+                                        </button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="7" class="px-6 py-4 whitespace-nowrap text-center">You have no active orders.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="completed-orders" class="tab-content hidden">
+                <table class="min-w-full divide-y divide-gray-700">
+                    <thead class="bg-gray-800">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Order ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Product</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Quantity</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Total</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Completed Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-gray-900 divide-y divide-gray-700">
+                        {% for order in completed_orders %}
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ order.id }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ order.product.name }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ order.quantity }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">KSh {{ order.total_amount }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                        {% if order.status == 'delivered' %}bg-green-100 text-green-800
+                                        {% elif order.status == 'cancelled' %}bg-red-100 text-red-800{% endif %}">
+                                        {{ order.get_status_display }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ order.updated_at|date:"M d, Y" }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="6" class="px-6 py-4 whitespace-nowrap text-center">You have no completed orders.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tab = button.getAttribute('data-tab');
+                    
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('border-primary', 'text-primary');
+                        btn.classList.add('border-transparent', 'text-gray-400', 'hover:text-gray-200', 'hover:border-gray-300');
+                    });
+                    
+                    button.classList.remove('border-transparent', 'text-gray-400', 'hover:text-gray-200', 'hover:border-gray-300');
+                    button.classList.add('border-primary', 'text-primary');
+
+                    tabContents.forEach(content => {
+                        content.classList.add('hidden');
+                    });
+
+                    document.getElementById(`${tab}-orders`).classList.remove('hidden');
+                });
+            });
+
+            // Cancel order functionality
+            const cancelButtons = document.querySelectorAll('.cancel-order-btn');
+            cancelButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const orderId = button.getAttribute('data-order-id');
+                    if (confirm('Are you sure you want to cancel this order?')) {
+                        fetch(`/cancel-order/${orderId}/`, {
+                            method: 'POST',
+                            headers: {
+                                'X-CSRFToken': getCookie('csrftoken'),
+                                'Content-Type': 'application/json',
+                            },
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === 'success') {
+                                alert('Order cancelled successfully');
+                                location.reload();
+                            } else {
+                                alert('Failed to cancel order. Please try again.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred. Please try again.');
+                        });
+                    }
+                });
+            });
+
+            // Function to get CSRF token from cookies
+            function getCookie(name) {
+                let cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    const cookies = document.cookie.split(';');
+                    for (let i = 0; i < cookies.length; i++) {
+                        const cookie = cookies[i].trim();
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Tracking</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF6600',
+                        secondary: '#000000',
+                    }
+                }
+            }
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-8 text-center text-primary">Order Tracking</h1>
+
+        {% if user.is_authenticated %}
+            {% if user.is_staff %}
+                <!-- Seller View -->
+                <div class="bg-secondary shadow-md rounded-lg overflow-hidden">
+                    <div class="border-b border-gray-700">
+                        <nav class="-mb-px flex" aria-label="Tabs">
+                            <button class="tab-btn w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm" data-tab="unfulfilled">
+                                Unfulfilled Orders
+                            </button>
+                            <button class="tab-btn w-1/2 py-4 px-1 text-center border-b-2 font-medium text-sm" data-tab="fulfilled">
+                                Fulfilled Orders
+                            </button>
+                        </nav>
+                    </div>
+
+                    <div id="unfulfilled-orders" class="tab-content">
+                        <table class="min-w-full divide-y divide-gray-700">
+                            <thead class="bg-gray-800">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Order ID</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Customer</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Total</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Date</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-gray-900 divide-y divide-gray-700">
+                                {% for order in unfulfilled_orders %}
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ order.id }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ order.user.username }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">KSh {{ order.total_amount }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ order.created_at|date:"M d, Y" }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            <button class="fulfill-btn bg-primary hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mr-2" data-order-id="{{ order.id }}">
+                                                Fulfill
+                                            </button>
+                                            <button class="cancel-btn bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" data-order-id="{{ order.id }}">
+                                                Cancel 
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="5" class="px-6 py-4 whitespace-nowrap text-center">No unfulfilled orders.</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="fulfilled-orders" class="tab-content hidden">
+                        <table class="min-w-full divide-y divide-gray-700">
+                            <thead class="bg-gray-800">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Order ID</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Customer</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Total</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Fulfilled Date</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-gray-900 divide-y divide-gray-700">
+                                {% for order in fulfilled_orders %}
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ order.id }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ order.user.username }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">KSh {{ order.total_amount }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ order.fulfilled_at|date:"M d, Y" }}</td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="4" class="px-6 py-4 whitespace-nowrap text-center">No fulfilled orders.</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            {% else %}
+                <!-- Buyer View -->
+                <div class="bg-secondary shadow-md rounded-lg overflow-hidden">
+                    <table class="min-w-full divide-y divide-gray-700">
+                        <thead class="bg-gray-800">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Order ID</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Total</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-gray-900 divide-y divide-gray-700">
+                            {% for order in user_orders %}
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ order.id }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">KSh {{ order.total_amount }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ order.created_at|date:"M d, Y" }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        {% if order.is_fulfilled %}
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                Fulfilled
+                                            </span>
+                                        {% else %}
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary text-white">
+                                                Processing
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="4" class="px-6 py-4 whitespace-nowrap text-center">You have no orders.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+        {% else %}
+            <p class="text-center text-gray-300">Please log in to view your orders.</p>
+        {% endif %}
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Tab switching
+            $('.tab-btn').click(function() {
+                $('.tab-btn').removeClass('border-primary text-primary').addClass('border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-300');
+                $(this).removeClass('border-transparent text-gray-400 hover:text-gray-200 hover:border-gray-300').addClass('border-primary text-primary');
+                
+                $('.tab-content').addClass('hidden');
+                $('#' + $(this).data('tab') + '-orders').removeClass('hidden');
+            });
+
+            // Initialize first tab
+            $('.tab-btn:first').click();
+
+            // Fulfill order
+            $('.fulfill-btn').click(function() {
+                var orderId = $(this).data('order-id');
+                $.ajax({
+                    url: '/fulfill-order/' + orderId + '/',
+                    type: 'POST',
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        if (response.status === 'success') {
+                            location.reload();
+                        } else {
+                            alert('Error fulfilling order. Please try again.');
+                        }
+                    }
+                });
+            });
+
+            // Cancel order
+            $('.cancel-btn').click(function() {
+                var orderId = $(this).data('order-id');
+                if (confirm('Are you sure you want to cancel this order?')) {
+                    $.ajax({
+                        url: '/cancel-order/' + orderId + '/',
+                        type: 'POST',
+                        data: {
+                            csrfmiddlewaretoken: '{{ csrf_token }}'
+                        },
+                        success: function(response) {
+                            if (response.status === 'success') {
+                                location.reload();
+                            } else {
+                                alert('Error cancelling order. Please try again.');
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

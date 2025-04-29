@@ -1,0 +1,61 @@
+
+        /* Basic styling for the deals container and individual deals */
+        body {
+          margin: 0;
+          padding: 0;
+          overflow-x: hidden; /* Prevent horizontal scroll bar */
+        }
+        
+        /* Container to hold all deals */
+        .deals-container {
+          width: 100vw; /* Full viewport width */
+          overflow: hidden; /* Hide overflowing slides */
+          position: relative;
+          height: 50vh; /* Full viewport height */
+        }
+
+        /* Deals section should be a flex container for horizontal layout */
+        .deals {
+          display: flex; /* Place items horizontally */
+          transition: transform 1s ease-in-out; /* Smooth sliding transition */
+        }
+
+        /* Individual deal styling */
+        .deal {
+          min-width: 100vw; /* Full viewport width */
+          height: 50vh; /* Full viewport height */
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 36px;
+          background-color: #fff;
+          border-radius: 0px;
+          margin: 0;
+          flex-shrink: 0;
+        }
+
+        /* Container for new section */
+        .new-container {
+          width: 100vw; /* Full viewport width */
+          overflow: hidden; /* Hide overflowing slides */
+          position: relative;
+          height: 50vh; /* Full viewport height */
+          padding-top: 10px;
+        }
+
+        .new {
+          display: flex; /* Flex layout for sliding */
+        }
+
+        .Mrk {
+          min-width: 100vw; /* Full viewport width */
+          height: 50vh; /* Full viewport height */
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 36px;
+          background-color: #fff;
+          border-radius: 0px;
+          margin: 0;
+          flex-shrink: 0;
+        }

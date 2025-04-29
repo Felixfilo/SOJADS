@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold mb-6">Admin Dashboard</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-2">Total Users</h2>
+                <p class="text-3xl font-bold">{{ total_users }}</p>
+                <p class="text-sm text-gray-500">{{ active_users }} active ({{ active_users_percentage|floatformat:1 }}%)</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-2">Active Users</h2>
+                <p class="text-3xl font-bold">{{ active_users }}</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-2">Total Sales</h2>
+                <p class="text-3xl font-bold">${{ total_sales|floatformat:2 }}</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-2">Total Products</h2>
+                <p class="text-3xl font-bold">{{ total_products }}</p>
+            </div>
+        </div>
+
+        <div class="bg-white p-4 rounded-lg shadow mb-8">
+            <h2 class="text-xl font-semibold mb-4">Monthly Sales</h2>
+            <canvas id="monthlySalesChart"></canvas>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-4">Top Products</h2>
+                <table class="w-full">
+                    <thead>
+                        <tr>
+                            <th class="text-left">Product Name</th>
+                            <th class="text-right">Total Orders</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for product in top_products %}
+                        <tr>
+                            <td>{{ product.name }}</td>
+                            <td class="text-right">{{ product.total_orders }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h2 class="text-xl font-semibold mb-4">Feedback Analysis</h2>
+                <canvas id="feedbackChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Monthly Sales Chart
+        var ctx = document.getElementById('monthlySalesChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {{ sales_labels|safe }},
+                datasets: [{
+                    label: 'Monthly Sales',
+                    data: {{ sales_data|safe }},
+                    backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value, index, values) {
+                                return '$' + value.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Feedback Analysis Chart
+        var feedbackCtx = document.getElementById('feedbackChart').getContext('2d');
+        new Chart(feedbackCtx, {
+            type: 'pie',
+            data: {
+                labels: ['1 Star', '2 Stars', '3 Stars', '4 Stars', '5 Stars'],
+                datasets: [{
+                    data: [
+                        {% for stat in feedback_stats %}
+                            {{ stat.count }},
+                        {% endfor %}
+                    ],
+                    backgroundColor: [
+                        '#FF6384',
+                        '#36A2EB',
+                        '#FFCE56',
+                        '#4BC0C0',
+                        '#9966FF'
+                    ]
+                }]
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+*{
+    box-sizing: border-box;
+}
+
+body{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: green;
+    background-image:url(background.jpg) ;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.register-box{
+    width: 300px;
+    height: 400px;
+    margin-bottom: 20px;
+    padding: 20px;
+    border: solid;
+    border-color: skyblue;
+    background-color:transparent;
+    backdrop-filter: blur(20px);
+}
+.register-box #username input{
+    height: 40px;
+    width: 250px;
+    padding: 10px;
+    border-radius: 50px;
+    border: block;
+    background-color:transparent;
+    cursor: text;
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 20px;
+}
+.register-box #last_name input{
+    height: 40px;
+    width: 250px;
+    padding: 10px;
+    border-radius: 50px;
+    border: block;
+    background-color:transparent;
+    cursor: text;
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 20px;
+}
+
+.register-box #email input{
+    height: 40px;
+    width: 250px;
+    padding: 10px;
+    border-radius: 50px;
+    border: block;
+    background-color:transparent;
+    cursor: text;
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 20px;
+}
+
+.register-box #password input{
+    height: 40px;
+    width: 250px;
+    padding: 10px;
+    border-radius: 50px;
+    border: block;
+    background-color:transparent;
+    cursor: text;
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 20px;
+}
+
+.register-box #password2 input{
+    height: 40px;
+    width: 250px;
+    padding: 10px;
+    border-radius: 50px;
+    border: block;
+    background-color:transparent;
+    cursor: text;
+    transition: all 0.3s ease-in-out;
+    margin-bottom: 20px;
+}
+
+.register-box #Register button{
+    height: 40px;
+    width: 250px;
+    padding: 10px;
+    border-radius: 10px;
+    border: block;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    align-self: center;
+    margin:10;
+}
+.register-box #Register button:hover{
+    color: blue;
+}
+.register-box #Register button:active{
+    height: 45px;
+    width: 255px;
+}
+

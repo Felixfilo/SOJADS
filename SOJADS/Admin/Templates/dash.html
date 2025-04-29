@@ -1,0 +1,66 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Admin Dashboard</title>
+</head>
+<body class="bg-gray-100 flex">
+    <nav class="w-64 bg-green-600 min-h-screen fixed">
+        <ul class="py-6">    
+            <li>
+                <button onclick="showContent('{% url 'Admin:Main' %}')" class="w-full text-left text-white hover:bg-green-700 transition-colors duration-200 py-3 px-6 flex items-center gap-3">
+                    <i class='bx bx-home-alt'></i>Dashboard
+                </button>
+            </li>
+            <li>
+                <button onclick="showContent('{% url 'Admin:users' %}')" class="w-full text-left text-white hover:bg-green-700 transition-colors duration-200 py-3 px-6 flex items-center gap-3">
+                    <i class='bx bx-user'></i>Users
+                </button>
+            </li>
+            <li>
+                <button onclick="showContent('{% url 'Admin:total_sales' %}')" class="w-full text-left text-white hover:bg-green-700 transition-colors duration-200 py-3 px-6 flex items-center gap-3">
+                    <i class='bx bx-dollar'></i>Sales
+                </button>
+            </li>
+            <li>
+                <button onclick="showContent('{% url 'Admin:top_selling' %}')" class="w-full text-left text-white hover:bg-green-700 transition-colors duration-200 py-3 px-6 flex items-center gap-3">
+                    <i class='bx bx-trending-up'></i>Top Products
+                </button>
+            </li>
+            <li>
+                <button onclick="showContent('{% url 'Admin:feedback_management' %}')" class="w-full text-left text-white hover:bg-green-700 transition-colors duration-200 py-3 px-6 flex items-center gap-3">
+                    <i class='bx bx-message-square-detail'></i>Feedback
+                </button>
+            </li>
+            <li>
+                <button onclick="window.location.href=''" class="w-full text-left text-white hover:bg-green-700 transition-colors duration-200 py-3 px-6 flex items-center gap-3">
+                    <i class='bx bx-log-out'></i>Logout
+                </button>
+            </li>
+        </ul>
+    </nav>
+
+    <main class="flex-1 ml-64 p-8">
+        <iframe id="contentFrame" class="w-full h-screen border-none" src="{% url 'Admin:Main' %}"></iframe>
+    </main>
+    <script>
+        function showContent(page) {
+            if (page) {
+                document.getElementById('contentFrame').src = page;
+            } else {
+                alert('Page not yet available!');
+            }
+        }
+        
+
+// Rotate every 3 seconds
+setInterval(rotateDeals, 3000);
+    </script>
+    
+</body>
+</html>

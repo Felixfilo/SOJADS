@@ -1,0 +1,7 @@
+# M-Pesa Configuration
+MPESA_API_KEY = 'TfAHvN3oYqD1xBBl6SPySY2vGqDxMMqiHdFCVDHApqhwVInA'
+MPESA_CONSUMER_KEY = 'TfAHvN3oYqD1xBBl6SPySY2vGqDxMMqiHdFCVDHApqhwVInA'
+MPESA_CONSUMER_SECRET = 'P1XO7bHkpGlKatrQvrZqlfAojIPtmgsGhAz3j4GaBA3A4QAk5vKbAJPmvRRrgJwy'
+MPESA_SHORTCODE = '174379'  # Sandbox test shortcode
+MPESA_PASSKEY = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919'  # Sandbox test passkey
+MPESA_ENVIRONMENT = 'sandbox'

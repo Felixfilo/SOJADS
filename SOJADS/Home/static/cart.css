@@ -1,0 +1,82 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: black; /* Black background */
+    color: white; /* White text */
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #1a1a1a; /* Dark gray for container */
+    border-radius: 8px; /* Rounded corners */
+}
+
+.title {
+    text-align: center;
+    color: orange; /* Orange title */
+    margin-bottom: 20px;
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse; /* Merge borders */
+}
+
+.cart-table th, .cart-table td {
+    padding: 12px; /* Padding for table cells */
+    text-align: left; /* Align text to the left */
+    border-bottom: 1px solid #444; /* Bottom border for rows */
+}
+
+.cart-table th {
+    background-color: #333; /* Darker gray for header */
+}
+
+.cart-table tr:hover {
+    background-color: #222; /* Darker background on hover */
+}
+
+.remove-button {
+    background-color: orange; /* Orange button */
+    color: black; /* Black text */
+    border: none; /* No border */
+    padding: 6px 12px; /* Padding for button */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+.remove-button:hover {
+    background-color: #ff8800; /* Darker orange on hover */
+}
+
+.total-price {
+    text-align: right; /* Align total price to the right */
+    margin-top: 20px; /* Space above total price */
+}
+
+.checkout {
+    text-align: center; /* Center the checkout button */
+    margin-top: 20px; /* Space above checkout button */
+}
+
+.checkout-button {
+    background-color: orange; /* Orange button */
+    color: black; /* Black text */
+    padding: 10px 20px; /* Padding for button */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    text-decoration: none; /* No underline */
+    font-weight: bold; /* Bold text */
+}
+
+.checkout-button:hover {
+    background-color: #ff8800; /* Darker orange on hover */
+}
+
+.empty-cart {
+    text-align: center; /* Center text for empty cart */
+    padding: 20px; /* Padding for empty cart message */
+}

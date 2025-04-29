@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold mb-8 text-gray-800">Feedback Management</h1>
+
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+            <div class="p-6">
+                <div class="space-y-6">
+                    {% for feedback in feedbacks %}
+                        <div class="border-b border-gray-200 pb-4">
+                            <p class="text-gray-600 mb-2">{{ feedback.created_at|date:"F d, Y H:i" }}</p>
+                            <p class="text-gray-800 mb-4">{{ feedback.content }}</p>
+                            <div class="flex items-center space-x-4">
+                                <form method="post" action="{% url 'update_feedback_status' feedback.id %}" class="flex items-center space-x-2">
+                                    {% csrf_token %}
+                                    <select name="status" onchange="this.form.submit()" class="block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-md">
+                                        <option value="unreviewed" {% if not feedback.reviewed %}selected{% endif %}>Unreviewed</option>
+                                        <option value="reviewed" {% if feedback.reviewed %}selected{% endif %}>Reviewed</option>
+                                    </select>
+                                </form>
+                                <form method="post" action="{% url 'delete_feedback' feedback.id %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
+                                        Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <p class="text-gray-600">No feedback available.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // This script will submit the form when the dropdown value changes
+        document.addEventListener('DOMContentLoaded', function() {
+            const selects = document.querySelectorAll('select[name="status"]');
+            selects.forEach(select => {
+                select.addEventListener('change', function() {
+                    this.form.submit();
+                });
+            });
+        });
+    </script>
+</body>
+</html>

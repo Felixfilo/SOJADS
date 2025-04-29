@@ -1,0 +1,58 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    background-color: gray;
+    overflow: scroll;
+}
+
+.header {
+    display: flex; /* Use flexbox to arrange buttons */
+    justify-content: flex-end; /* Align buttons to the right */
+    padding: 20px; /* Add padding around the header */
+}
+
+button {
+    background-color: orangered; /* Background color for buttons */
+    color: white; /* Text color */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px 15px; /* Add padding */
+    margin-left: 10px; /* Space between buttons */
+    cursor: pointer; /* Show pointer on hover */
+    font-size: 14px; /* Set font size */
+}
+
+button:hover {
+    background-color: darkorange; /* Darken background on hover */
+}
+
+.products {
+    display: flex; /* Enable flexbox */
+    flex-wrap: wrap; /* Allow items to wrap onto the next line */
+    justify-content: flex-start; /* Align items to the start of the flex container */
+    margin: 20px; /* Optional: add some margin to the container */
+}
+
+.product {
+    background-color: white;
+    width: 200px; /* Set a fixed width for each product */
+    height: 250px; /* Set a fixed height for each product */
+    margin: 10px; /* Add some margin around each product */
+    border: 5px solid black;
+    border-radius: 10px;
+    font-size: 15px;
+    color: orangered;
+    display: flex; /* Enable flexbox for product items */
+    flex-direction: column; /* Arrange image and text vertically */
+    align-items: center; /* Center items horizontally */
+}
+
+.product img {
+    background-color: gray;
+    width: 190px; /* Width of the image */
+    height: 140px; /* Height of the image */
+    object-fit: cover; /* Ensures the image covers the area without distortion */
+}

@@ -1,0 +1,92 @@
+/* General reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif; /* Sets a clean font */
+    background-color: #f4f4f4; /* Light gray background */
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 600px; /* Limits the width of the form */
+    margin: 50px auto; /* Centers the form */
+    padding: 20px;
+    background-color: #fff; /* White background for the form */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}
+
+h1 {
+    text-align: center; /* Centered title */
+    color: #333; /* Dark gray text */
+}
+
+form {
+    display: flex;
+    flex-direction: column; /* Stacks form elements vertically */
+}
+
+label {
+    margin-bottom: 5px; /* Space between label and field */
+    font-weight: bold; /* Bold labels */
+}
+
+input[type="text"],
+input[type="number"],
+input[type="file"],
+textarea {
+    padding: 10px; /* Padding inside input fields */
+    margin-bottom: 15px; /* Space below each field */
+    border: 1px solid #ccc; /* Light gray border */
+    border-radius: 4px; /* Rounded corners */
+    font-size: 16px; /* Larger font */
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="file"]:focus,
+textarea:focus {
+    border-color: blue; /* Blue border on focus */
+    outline: none; /* Removes default outline */
+}
+
+button[type="submit"] {
+    background-color: blue; /* Blue button */
+    color: white; /* White text */
+    border: none; /* Removes border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 10px;
+    font-size: 16px; /* Larger text */
+    cursor: pointer; /* Pointer cursor on hover */
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+}
+
+.error {
+    color: red; /* Red color for error messages */
+    font-size: 14px; /* Smaller font size */
+    margin-bottom: 10px; /* Space below error message */
+}
+
+.back-button {
+    background-color: black; /* Gray background */
+    color: white; /* White text */
+    border: none; /* No border */
+    border-radius: 4px; /* Rounded corners */
+    padding: 10px;
+    font-size: 16px; /* Larger text */
+    cursor: pointer; /* Pointer cursor on hover */
+    margin-top: 15px; /* Space above the button */
+}
+
+.back-button:hover {
+    background-color: #5a6268; /* Darker gray on hover */
+}
+
